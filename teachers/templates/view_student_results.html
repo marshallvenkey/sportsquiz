@@ -1,0 +1,35 @@
+<!-- teachers/templates/teachers/view_student_results.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Student Results - Topic-wise</h2>
+
+  <!-- Existing code for topic navigation and sorting options -->
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Student</th>
+        <th>Test</th>
+        <th>Date</th>
+        <th>Marks</th>
+        <th>Test Time</th>  <!-- New column for displaying test time -->
+      </tr>
+    </thead>
+    <tbody>
+      {% for test_result in test_results %}
+      <tr>
+        <td>{{ test_result.bhu.user.username }}</td>
+        <td>{{ test_result.topic }}</td>
+        <td>{{ test_result.date1 }}</td>
+        <td>{{ test_result.marks }}</td>
+         
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5">No results found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% if topic.topic_start and topic.topic_start <= current_time and topic.topic_end and topic.topic_end > current_time %}
+    <h2>Take Test</h2>
+    <h3>Topic: {{ topic.topic }}</h3>
+
+    <form id="test-form" method="post" action="{% url 'take_test' topic_id=topic.id %}">
+      {% csrf_token %}
+
+      <input type="hidden" name="question_index" value="{{ question_index }}">
+      <input type="hidden" name="question_id" value="{{ question.id }}">
+
+      <h4>Question {{ question_index|add:1 }} of {{ question_count }}</h4>
+      <p>{{ question.question }}</p>
+      <ul>
+        <li>
+          <input type="radio" id="option1_{{ question.id }}" name="question_{{ question.id }}" value="{{ question.option1 }}">
+          <label class="form-group" for="option1_{{ question.id }}">1. &nbsp; &nbsp;{{ question.option1 }}</label>
+        </li>
+        <li>
+          <input type="radio" id="option2_{{ question.id }}" name="question_{{ question.id }}" value="{{ question.option2 }}">
+          <label class="form-group" for="option2_{{ question.id }}">2. &nbsp; &nbsp;{{ question.option2 }}</label>
+        </li>
+        <li>
+          <input type="radio" id="option3_{{ question.id }}" name="question_{{ question.id }}" value="{{ question.option3 }}">
+          <label class="form-group" for="option3_{{ question.id }}">3. &nbsp; &nbsp;{{ question.option3 }}</label>
+        </li>
+        <li>
+          <input type="radio" id="option4_{{ question.id }}" name="question_{{ question.id }}" value="{{ question.option4 }}">
+          <label class="form-group" for="option4_{{ question.id }}">4. &nbsp; &nbsp;{{ question.option4 }}</label>
+        </li>
+      </ul>
+
+      {% if question_index|add:1 < question_count %}
+        <button class="btn btn-primary" type="submit">Next</button>
+      {% else %}
+        <button class="btn btn-primary" type="submit">Submit</button>
+      {% endif %}
+    </form>
+
+    <p id="end-timer">Time Left: <span id="end-timer-value"></span></p>
+
+    <!-- Rest of your HTML code -->
+
+<!-- Rest of your HTML code -->
+
+<!-- Rest of your HTML code -->
+
+<script>
+  // Set the end time for the test (replace with your desired end time)
+  var testEndTime = new Date("{{ topic.topic_end|date:'Y-m-d H:i:s' }}").getTime();
+  var warningTime = 30 * 1000; // 30 seconds
+
+  // Update the end timer every second
+  var endTimerInterval = setInterval(function() {
+    // Get the current time
+    var now = new Date().getTime();
+
+    // Calculate the remaining time
+    var remainingTime = testEndTime - now;
+
+    // Check if the test has ended
+    if (remainingTime <= 0) {
+      clearInterval(endTimerInterval);
+      document.getElementById("end-timer").innerHTML = "Test Ended";
+
+      // Manually submit the form and redirect to the home page
+      document.getElementById("test-form").submit();
+      window.location.href = "{% url 'home' %}";
+    } else if (remainingTime <= warningTime) {
+      // Display warning message to submit before time is up
+      document.getElementById("end-timer").style.color = "red";
+      document.getElementById("end-timer-value").innerHTML = "Time Left: " + Math.floor(remainingTime / 1000) + "s. Submit now!";
+    } else {
+      // Calculate the minutes and seconds
+      var minutes = Math.floor((remainingTime / (1000 * 60)) % 60);
+      var seconds = Math.floor((remainingTime / 1000) % 60);
+
+      // Add leading zeros if necessary
+      minutes = (minutes < 10) ? "0" + minutes : minutes;
+      seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+      // Display the remaining time in the HTML element
+      document.getElementById("end-timer-value").innerHTML = "Time Left: " + minutes + "m " + seconds + "s";
+    }
+  }, 1000);
+</script>
+
+<!-- Rest of your HTML code -->
+
+
+<!-- Rest of your HTML code -->
+
+
+<!-- Rest of your HTML code -->
+
+
+  {% else %}
+    <h3>The topic has not started yet.</h3>
+  {% endif %}
+{% endblock %}

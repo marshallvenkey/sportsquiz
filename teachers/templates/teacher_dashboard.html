@@ -1,0 +1,14 @@
+<!-- teachers/templates/teachers/teacher_dashboard.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Teacher Dashboard</h2>
+   
+
+  <p>Welcome, {{ request.user.username }}!</p>
+
+   
+  <!-- Other dashboard content -->
+
+  <a href="{% url 'view_student_results' %}">View Student Results</a>
+{% endblock %}

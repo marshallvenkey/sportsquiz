@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <h2>Welcome, {{ request.user.username }}!</h2>
+
+  {% if user_schedule %}
+    <h3>Dashboard Access Schedule:</h3>
+    <p>Starts: {{ user_schedule.dashboard_access_schedule_start|date:"D, d-M-Y, h:i A" }}</p>
+    <p>Ends: {{ user_schedule.dashboard_access_schedule_end|date:"D, d-M-Y, h:i A" }}</p>
+    <div id="countdown"></div>
+    
+    <script src="{% static 'jquery.countdown.min.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+          var start = new Date('{{ user_schedule.dashboard_access_schedule_start }}');
+          var end = new Date('{{ user_schedule.dashboard_access_schedule_end }}');
+          var now = new Date();
+      
+          if (now >= start && now <= end) {
+            $('#countdown').countdown(end, function(event) {
+              $(this).text(
+                event.strftime('%D days %H:%M:%S')
+              );
+            });
+          } else if (now < start) {
+            var timeUntilStart = start - now;
+            $('#countdown').countdown(timeUntilStart, function(event) {
+              $(this).text(
+                event.strftime('Dashboard access starts in %D days %H:%M:%S')
+              );
+            });
+          } else {
+            $('#countdown').text('Dashboard access has ended.');
+          }
+        });
+      </script>
+      
+  {% else %}
+    <p>No dashboard access schedule found.</p>
+  {% endif %}
+{% endblock %}

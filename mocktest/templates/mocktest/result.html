@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block content %}
+  <h2>Test Result</h2>
+    
+  <p>Topic: {{ test_result.topic }}</p>
+  <p>Marks: {{ test_result.marks }}</p>
+  
+
+  <h3>Questions:</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Question Number</th>
+        <th>Question</th>
+        <th>Correct Answer</th>
+        <th>Your Answer</th>
+        <th>Result</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for question_answer, user_answer in question_answers %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ question_answer.question }}</td>
+          <td>{{ question_answer.answer }}</td>
+          <td>{{ user_answer }}</td>
+          <td>{% if question_answer.answer == user_answer %}✅{% else %}❌{% endif %}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

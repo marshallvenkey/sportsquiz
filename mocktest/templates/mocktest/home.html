@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="jumbotron">
+        <h1 class="display-4">Welcome to Mock Test Website</h1>
+        <p class="lead">Prepare for your exams with our online mock tests.</p>
+        {% if user.is_authenticated %}
+            <a class="btn btn-primary btn-lg" href="{% url 'dashboard' %}" role="button">Go to Dashboard</a>
+        {% else %}
+            <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Register</a>
+            <a class="btn btn-secondary btn-lg" href="{% url 'user_login' %}" role="button">Login</a>
+        {% endif %}
+    </div>
+{% endblock %}

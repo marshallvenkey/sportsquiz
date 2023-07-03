@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>User Profile</h2>
+   
+  <p><strong>Username:</strong> {{ user_detail.user.username }}</p>
+  
+  <p><strong>School Name:</strong> {{ user_detail.cat }}</p>
+  <p><strong>Gender:</strong> {{ user_detail.gender }}</p>
+  <p><strong>Mobile:</strong> {{ user_detail.mobile }}</p>
+  <p><strong>Mandal:</strong> {{ user_detail.add1 }}</p>
+{% endblock %}

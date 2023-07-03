@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Topic Not Started{% endblock %}
+
+{% block content %}
+    <h1>Topic Not Started</h1>
+    <p>Start Time: {{ topic.topic_start|date:'Y-m-d H:i:s' }}</p>
+    <p>End Time: {{ topic.topic_end|date:'Y-m-d H:i:s' }}</p>
+    <p id="countdown">Countdown: <span id="timer"></span></p>
+
+    <script>
+        // Set the countdown start time and end time (replace with your desired start time and end time)
+        var countdownStartTime = new Date("{{ topic.topic_start|date:'Y-m-d H:i:s' }}").getTime();
+        var countdownEndTime = new Date("{{ topic.topic_end|date:'Y-m-d H:i:s' }}").getTime();
+
+        // Get the current time
+        var now = new Date().getTime();
+
+        // Check if the countdown has started
+        if (now >= countdownStartTime) {
+            // Redirect to the dashboard
+            window.location.href = "{% url 'dashboard' %}";
+        } else {
+            // Update the countdown every second
+            var countdownInterval = setInterval(function() {
+                // Get the current time
+                var now = new Date().getTime();
+
+                // Calculate the remaining time
+                var remainingTime = countdownStartTime - now;
+
+                // Check if the countdown has ended
+                if (remainingTime <= 0) {
+                    clearInterval(countdownInterval);
+                    // Redirect to the dashboard
+                    window.location.href = "{% url 'dashboard' %}";
+                    return;
+                }
+
+                // Calculate the hours, minutes, and seconds
+                var hours = Math.floor((remainingTime / (1000 * 60 * 60)) % 24);
+                var minutes = Math.floor((remainingTime / (1000 * 60)) % 60);
+                var seconds = Math.floor((remainingTime / 1000) % 60);
+
+                // Add leading zeros if necessary
+                hours = (hours < 10) ? "0" + hours : hours;
+                minutes = (minutes < 10) ? "0" + minutes : minutes;
+                seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+                // Display the remaining time in the HTML element
+                document.getElementById("timer").innerHTML = hours + "h " + minutes + "m " + seconds + "s";
+            }, 1000);
+        }
+    </script>
+{% endblock %}

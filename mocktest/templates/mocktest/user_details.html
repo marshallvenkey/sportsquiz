@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>User Details</h2>
+  <form method="POST" action="{% url 'user_details' user.id %}">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="cat">Student Name:</label>
+      <input type="text" class="form-control" id="cat" name="studentname" required>
+    </div>
+    <div class="form-group">
+      <label for="gender">School Name:</label>
+      <input type="text" class="form-control" id="gender" name="schoolname" required>
+    </div>
+    <div class="form-group">
+      <label for="mobile">Mandal Name:</label>
+      <input type="text" class="form-control" id="mobile" name="mandalname" required>
+    </div>
+    <div class="form-group">
+      <label for="add1">District Name:</label>
+      <input type="text" class="form-control" id="add1" name="distname" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </form>
+{% endblock %}
