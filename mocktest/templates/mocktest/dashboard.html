@@ -1,76 +1,92 @@
 {% extends 'base.html' %}
-
 {% block content %}
-  <h2>Welcome, {{ request.user.username }}!</h2>
-
-  <h3>Courses:</h3>
-  <select id="courseSelect">
-    <option value="">All</option>
-    {% for course in courses %}
-      <option value="{{ course.id }}">{{ course.course_name }}</option>
-    {% endfor %}
-  </select>
-
-  <h3>Topics:</h3>
-  <select id="topicSelect" disabled>
-    <option value="">Select a Course first</option>
-    {% for topic in topics %}
-      <option value="{{ topic.id }}" data-course="{{ topic.course.id }}">{{ topic.topic }}</option>
-    {% endfor %}
-  </select>
-
-  <a href="#" id="startTestBtn" class="btn btn-primary" disabled>Start Test</a>
-<div>
-  <a href="{% url 'previous_results' %}" class="btn btn-primary">View Previous Results</a>
-  <a href="{% url 'user_profile' %}"  class="btn btn-primary">User Profile</a>
-
+{% load static %}
+  {% load extras %}
+  {% load crispy_forms_tags %}
+  <br>
+<div class="col-12 text-center">
+<a href="{% url 'mocktest:previous_results' %}" class="btn btn-primary">View Previous Results</a>
+<a href="{% url 'mocktest:user_profile' %}"  class="btn btn-primary">User Profile</a>
 </div>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script>
-    $(document).ready(function() {
-      // Function to update the topic select options based on the selected course
-      function updateTopicOptions() {
-        var selectedCourse = $('#courseSelect').val();
-        var topicSelect = $('#topicSelect');
-        topicSelect.prop('disabled', true);
-        topicSelect.find('option').hide();
+            <!-- Banner -->
+            <div class="container ">
+              <div class="form-section  mx-auto">
+<form method="get" class="form-inline" class="uniForm">
+        {{ postall.form|crispy }}
+        <input class="btn btn-primary" type="submit" value="select" />
 
-        if (selectedCourse) {
-          topicSelect.find('option[data-course="' + selectedCourse + '"]').show();
-          topicSelect.prop('disabled', false);  // Enable the topic select
-          topicSelect.val('');  // Clear the selected topic
-        }
 
-        $('#startTestBtn').prop('disabled', true);
-      }
+             
+        <section>
 
-      // Function to construct the start button URL
-      function constructStartButtonUrl() {
-        var selectedCourse = $('#courseSelect').val();
-        var selectedTopic = $('#topicSelect').val();
+        
+    </form>
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="section-heading">
+                      <h2>Lessons</h2>
+                    </div>
+                    <div class="default-table">
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            
+                            <th>CLASS</th>
+                            <th>SUBJECT</th>
+                            <th>CHAPTER</th>
+                            <th>LESSON</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for obj in postall_paginator %}
+                          <tr>
+                            
+                            <td>{{ obj.sclass }}</td>
+                            <td>{{ obj.subject }}</td>
+                            <td>{{ obj.chapter }}</td>
+                            <td>{{ obj.slesson }}</td>
+                            <td><div class="btn btn-warning">
+                              <a href="{% url 'mocktest:take_test' obj.id %}" class="btn btn-primary">Take test</a></div>
+                          </tr>
+                          
+                          {% endfor %}
+                        </tbody>
+                      </table>
 
-        if (selectedCourse && selectedTopic) {
-          var url = '{% url "take_test" topic_id=0 %}'.replace('0', selectedTopic);
-          $('#startTestBtn').attr('href', url);
-        } else {
-          $('#startTestBtn').removeAttr('href');
-        }
-      }
+ 
+  <div class="pagination">
+    <span class="step-links">
+        {% if postall_paginator.has_previous %}                
+ <a href="{% my_url 1 'page' request.GET.urlencode %}">&laquo;Frist</a>
+<a href="{% my_url postall_paginator.previous_page_number 'page' request.GET.urlencode %}">Previous</a>
 
-      // Event listener for course select change
-      $('#courseSelect').change(function() {
-        updateTopicOptions();
-        constructStartButtonUrl();
-      });
+{% endif %}
+      <span class="current">
+    {{postall_paginator.number}} of {{postall_paginator.paginator.num_pages}}
+   </span>
 
-      // Event listener for topic select change
-      $('#topicSelect').change(function() {
-        constructStartButtonUrl();
-      });
+            {% if postall_paginator.has_next %}                
+ <a href="{% my_url postall_paginator.next_page_number 'page' request.GET.urlencode %}">&laquo;Next</a>
+<a href="{% my_url postall_paginator.num_pages 'page' request.GET.urlencode %}">Last</a>
 
-      // Initial update of topic select options
-      updateTopicOptions();
-      constructStartButtonUrl();
-    });
-  </script>
-{% endblock %}
+{% endif %}
+               </span>      
+                      
+                    </div>
+                     
+                  </div>
+                </div>
+              </div>
+            </section>
+
+          </div>
+        </div>         
+
+            <!-- Services -->
+            
+          </div>
+        </div>
+
+      <!-- Sidebar -->
+      {% endblock  %}

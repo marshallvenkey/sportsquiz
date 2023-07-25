@@ -10,5 +10,8 @@
    
   <!-- Other dashboard content -->
 
-  <a href="{% url 'view_student_results' %}">View Student Results</a>
+  <a href="{% url 'teachers:view_student_results' %}">View Student Results</a>
+  <!-- For example, in your base.html template -->
+<a href="{% url 'teachers:bulk_register' %}">Bulk Register</a>
+
 {% endblock %}

@@ -2,7 +2,7 @@
 
 {% block content %}
   <h2>User Details</h2>
-  <form method="POST" action="{% url 'user_details' user.id %}">
+  <form method="POST" action="{% url 'mocktest:user_details' user.id %}">
     {% csrf_token %}
     <div class="form-group">
       <label for="cat">Student Name:</label>

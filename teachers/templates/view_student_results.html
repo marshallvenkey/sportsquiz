@@ -1,29 +1,64 @@
-<!-- teachers/templates/teachers/view_student_results.html -->
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Student Results - Topic-wise</h2>
+  <h2>Student Results </h2>
 
-  <!-- Existing code for topic navigation and sorting options -->
+  <form method="get">
+    <div class="form-group">
+      <label for="sclass">Select Class:</label>
+      <select name="sclass_id" class="form-control" id="sclass">
+        <option value="">All</option>
+        {% for sclass in sclasses %}
+        <option value="{{ sclass.id }}" {% if selected_sclass == sclass.id %}selected{% endif %}>{{ sclass.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="slesson">Select Lesson:</label>
+      <select name="slesson_id" class="form-control" id="slesson">
+        <option value="">All</option>
+        {% for slesson in slessons %}
+        <option value="{{ slesson.id }}" {% if selected_slesson == slesson.id %}selected{% endif %}>{{ slesson.slesson }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="subject">Select Subject:</label>
+      <select name="subject_id" class="form-control" id="subject">
+        <option value="">All</option>
+        {% for subject in subjects %}
+        <option value="{{ subject.id }}" {% if selected_subject == subject.id %}selected{% endif %}>{{ subject.sname }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="sort_by">Sort by:</label>
+      <select name="sort_by" class="form-control" id="sort_by">
+        <option value="marks" {% if sort_by == 'marks' %}selected{% endif %}>Marks</option>
+        <option value="date1" {% if sort_by == 'date1' %}selected{% endif %}>Date</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Filter</button>
+  </form>
 
   <table class="table">
     <thead>
       <tr>
         <th>Student</th>
-        <th>Test</th>
+        <th>Lesson</th>
+        <th>Subject</th>
         <th>Date</th>
         <th>Marks</th>
-        <th>Test Time</th>  <!-- New column for displaying test time -->
       </tr>
     </thead>
     <tbody>
       {% for test_result in test_results %}
       <tr>
         <td>{{ test_result.bhu.user.username }}</td>
-        <td>{{ test_result.topic }}</td>
+        <td>{{ test_result.slesson.slesson }}</td>
+        <td>{{ test_result.slesson.subject.sname }}</td>
         <td>{{ test_result.date1 }}</td>
         <td>{{ test_result.marks }}</td>
-         
       </tr>
       {% empty %}
       <tr>

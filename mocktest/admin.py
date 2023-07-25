@@ -1,50 +1,71 @@
 from django.contrib import admin
+from .models import Sclass, Subject, Chapter, Slesson, Question, UserDetail, TestResult, FinalResult
 from import_export.admin import ImportExportModelAdmin
 from django.contrib.admin.options import ModelAdmin
-from import_export import resources, fields
-from .models import *
-from import_export.fields import Field
-from import_export import fields, resources, widgets
-from import_export.widgets import ForeignKeyWidget
-from django import forms
 
-@admin.register(Question)
+class SclassAdmin(ModelAdmin):
+	
+
+	list_display = ["name" ]
+	 
+	search_fields = ["name"]
+	list_filter = ["name"]
+admin.site.register(Sclass,SclassAdmin)
+
+class SubjectAdmin(ModelAdmin):
+	
+
+	list_display = ["sname" ]
+	 
+	search_fields = ["sname"]
+	list_filter = ["sname"]
+admin.site.register(Subject,SubjectAdmin)
+
+
+class ChapterAdmin(ModelAdmin):
+	
+
+	list_display = ["name" ]
+	 
+	search_fields = ["name"]
+	list_filter = ["name"]
+admin.site.register(Chapter,ChapterAdmin)
+
+
+
+
+class SlessonAdmin(ModelAdmin):
+
+
+	
+	list_display = ["id","slesson"]
+	 
+	search_fields =["slesson"]
+	list_filter = ["slesson"]
+
+admin.site.register(Slesson,SlessonAdmin)    
+# Register your models with the admin site
+ 
 class QuestionAdmin(ImportExportModelAdmin):
-    list_display = ["question", "topic"]
-
-    search_fields = ["question", "topic"]
-    list_filter = ["question", "topic"]
-
-    resources_class = resources.ModelResource(
-        fields=[
-            fields.Field(
-                column_name="topic",
-                attribute="topic",
-                widget=ForeignKeyWidget(Topic, "topic"),
-            )
-        ]
-    )
 
 
-admin.site.register(Course)
+	
+	list_display = ["slesson","question"]
+	 
+	search_fields =["slesson"]
+	list_filter = ["slesson"] 
 
+admin.site.register(Question,QuestionAdmin)     
 
-class TopicAdmin(admin.ModelAdmin):
-    list_display = ['course', 'level', 'topic', 'test_attempts']
-    actions = ['reset_test_attempts']
+class UserDetailAdmin(ModelAdmin):
+	
 
-    def reset_test_attempts(self, request, queryset):
-        queryset.update(test_attempts=1)
-
-    reset_test_attempts.short_description = "Reset test attempts"
-
-admin.site.register(Topic, TopicAdmin)
+	list_display = ["studentname" ]
+	 
+	search_fields = ["studentname"]
+	list_filter = ["studentname"]
+admin.site.register(UserDetail,UserDetailAdmin)
 
  
-
-@admin.register(UserDetail)
-class UserDetailAdmin(admin.ModelAdmin):
-    list_display = ('user', )
-
 admin.site.register(TestResult)
 admin.site.register(FinalResult)

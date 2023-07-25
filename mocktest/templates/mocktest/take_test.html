@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  {% if topic.topic_start and topic.topic_start <= current_time and topic.topic_end and topic.topic_end > current_time %}
-    <h2>Take Test</h2>
-    <h3>Topic: {{ topic.topic }}</h3>
+ 
+    <h1>Take Test</h1>
+    <h3>Topic: {{ slesson.slesson }}</h3>
 
-    <form id="test-form" method="post" action="{% url 'take_test' topic_id=topic.id %}">
+    <form id="test-form" method="post" action="{% url 'mocktest:take_test' slesson_id=slesson.id %}">
       {% csrf_token %}
 
       <input type="hidden" name="question_index" value="{{ question_index }}">
@@ -67,7 +67,7 @@
 
       // Manually submit the form and redirect to the home page
       document.getElementById("test-form").submit();
-      window.location.href = "{% url 'home' %}";
+      window.location.href = "{% url 'mocktest:home' %}";
     } else if (remainingTime <= warningTime) {
       // Display warning message to submit before time is up
       document.getElementById("end-timer").style.color = "red";
@@ -95,8 +95,5 @@
 
 <!-- Rest of your HTML code -->
 
-
-  {% else %}
-    <h3>The topic has not started yet.</h3>
-  {% endif %}
+ 
 {% endblock %}
